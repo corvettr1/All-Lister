@@ -1,0 +1,69 @@
+local mainTable = {}
+local secondaryTable = {}
+local questions = {
+  "Would you like to divide or multiply?",
+  "Type your dividends/multiplicands.",
+  "Type your divisors/multipliers.",
+  "Go by Singles?"
+}
+local div = "/"
+local mode = "All"
+
+for i,v in ipairs(questions) do
+  print(v)
+  local text = io.read()
+  if i == 1 then
+    if text == "/" then
+      div = "/"
+    else
+      div = "*"
+    end
+  elseif i == 2 then
+    for num_str in text:gmatch("(%d+%.?%d*)") do -- Matches integers or decimals
+        table.insert(mainTable, tonumber(num_str))
+    end
+  elseif i == 3 then
+    for num_str in text:gmatch("(%d+%.?%d*)") do -- Matches integers or decimals
+      table.insert(secondaryTable, tonumber(num_str))
+    end
+  else
+    if text == "Yes" or text == "Y" then
+      mode = "Singles"
+    end
+  end
+end
+
+os.execute("clear")
+
+if mode == "All" then
+  for i,v in ipairs(mainTable) do
+    for _,x in ipairs(secondaryTable) do
+      local y = 0
+      if div == "/" then
+        y = v/x
+      else
+        y = v*x
+      end
+      print(v..div..x.." = "..y)
+    end
+  end
+else
+  local x = 0
+  local z = table
+  if #mainTable > #secondaryTable then
+    z = secondaryTable
+  else
+    z = mainTable
+  end
+  x = #z
+  
+  for i = 1,x,1 do
+    local y = 0
+    if div == "/" then
+      y = mainTable[i]/secondaryTable[i]
+    else
+      y = mainTable[i]*secondaryTable[i]
+    end
+    print(mainTable[i]..div..secondaryTable[i].." = "..y)
+  end
+end
